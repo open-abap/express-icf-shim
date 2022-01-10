@@ -1,0 +1,12 @@
+@hostname = localhost
+@port = 3000
+@path = /abap
+@uri = http://{{hostname}}:{{port}}{{path}}
+
+###
+POST {{uri}} HTTP/1.1
+Content-Type: application/json
+
+{
+  "sdfs": 2
+}

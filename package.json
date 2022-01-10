@@ -1,0 +1,25 @@
+{
+  "name": "express-icf-shim",
+  "private": true,
+  "version": "1.0.0",
+  "description": "express ICF shim",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/open-abap/express-sicf-shim.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/open-abap/express-sicf-shim/issues"
+  },
+  "homepage": "https://github.com/open-abap/express-sicf-shim#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}

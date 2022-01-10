@@ -1,0 +1,11 @@
+CLASS cl_express_icf_shim DEFINITION PUBLIC.
+  PUBLIC SECTION.
+    CLASS-METHODS run
+      IMPORTING express TYPE any.
+ENDCLASS.
+
+CLASS cl_express_icf_shim IMPLEMENTATION.
+  METHOD run.
+
+  ENDMETHOD.
+ENDCLASS.

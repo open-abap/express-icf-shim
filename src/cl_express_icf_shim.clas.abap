@@ -14,6 +14,7 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
     DATA lv_value TYPE string.
     DATA lv_code TYPE i.
     DATA lv_classname TYPE string.
+    DATA lv_content_type TYPE string.
     DATA li_handler TYPE REF TO if_http_extension.
     DATA li_server TYPE REF TO if_http_server.
 
@@ -45,6 +46,9 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
 
     lv_xstr = li_server->response->get_data( ).
     li_server->response->get_status( IMPORTING code = lv_code ).
+
+    lv_content_type = li_server->response->get_content_type( ).
+    WRITE '@KERNEL INPUT.res.append("Content-Type", lv_content_type.get());'.
 
     WRITE '@KERNEL INPUT.res.status(lv_code.get()).send(Buffer.from(lv_xstr.get(), "hex"));'.
   ENDMETHOD.

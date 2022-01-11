@@ -6,6 +6,8 @@ await initializeABAP();
 const PORT = 3000;
 
 const app = express();
+app.disable('x-powered-by');
+app.set('etag', false);
 app.use(express.raw({type: "*/*"}));
 
 // ------------------

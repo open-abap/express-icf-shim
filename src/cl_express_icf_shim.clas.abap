@@ -9,7 +9,7 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
 
   METHOD run.
     DATA lv_xstr TYPE xstring.
-    DATA lv_str TYPE xstring.
+    DATA lv_str TYPE string.
     DATA lv_name TYPE string.
     DATA lv_value TYPE string.
     DATA lv_code TYPE i.

@@ -18,7 +18,7 @@ app.use(express.raw({type: "*/*"}));
 
 ...
 
-app.all("/abap", async function (req, res) {
+app.all(["/abap", "/abap*"], async function (req, res) {
   await cl_express_icf_shim.run({req, res, class: "ZCL_HTTP_HANDLER"});
 });
 

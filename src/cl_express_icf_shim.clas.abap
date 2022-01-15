@@ -35,7 +35,11 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
       value = lv_value ).
     WRITE '@KERNEL }'.
 
-* todo, req.path
+    WRITE '@KERNEL lv_value.set(INPUT.req.path);'.
+    li_server->request->set_header_field(
+      name  = '~path'
+      value = lv_value ).
+
 * todo, req.query
 
 ********************************************************

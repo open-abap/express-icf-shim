@@ -2,6 +2,8 @@
 
 [express](https://expressjs.com) 4.x ICF shim, `if_http_extension`
 
+The ABAP code must set correct status and content types in responses.
+
 ## Usage
 
 wip,

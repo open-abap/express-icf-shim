@@ -28,7 +28,8 @@ CLASS lcl_server IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD if_http_server~set_compression.
-    ASSERT 1 = 'todo'.
+* todo
+    RETURN.
   ENDMETHOD.
 
   METHOD if_http_server~send_page.

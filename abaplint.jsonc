@@ -70,7 +70,10 @@
     "form_tables_obsolete": true,
     "fully_type_constants": true,
     "function_module_recommendations": true,
-    "functional_writing": true,
+    "functional_writing": {
+      "exclude": ["testclasses"],
+      "ignoreExceptions": false
+    },
     "global_class": true,
     "identical_conditions": true,
     "identical_contents": true,

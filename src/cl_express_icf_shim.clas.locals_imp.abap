@@ -97,7 +97,8 @@ CLASS lcl_server IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD if_http_server~set_session_stateful.
-    ASSERT 1 = 'todo'.
+* todo, hmm, the node will run in one thread, always with state?
+    RETURN.
   ENDMETHOD.
 
 ENDCLASS.

@@ -54,6 +54,9 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
 
     lv_xstr = mi_server->response->get_data( ).
     mi_server->response->get_status( IMPORTING code = lv_code ).
+    IF lv_code IS INITIAL.
+      lv_code = 200.
+    ENDIF.
 
     lv_content_type = mi_server->response->get_content_type( ).
     WRITE '@KERNEL INPUT.res.append("Content-Type", lv_content_type.get());'.

@@ -3,40 +3,44 @@ CLASS cl_express_icf_shim DEFINITION PUBLIC.
     CLASS-METHODS run
       IMPORTING
         express TYPE any.
+  PRIVATE SECTION.
+    CLASS-DATA mi_server TYPE REF TO if_http_server.
 ENDCLASS.
 
 CLASS cl_express_icf_shim IMPLEMENTATION.
 
   METHOD run.
-    DATA lv_xstr TYPE xstring.
-    DATA lv_str TYPE string.
-    DATA lv_name TYPE string.
-    DATA lv_value TYPE string.
-    DATA lv_code TYPE i.
-    DATA lv_classname TYPE string.
+    DATA lv_xstr         TYPE xstring.
+    DATA lv_str          TYPE string.
+    DATA lv_name         TYPE string.
+    DATA lv_value        TYPE string.
+    DATA lv_code         TYPE i.
+    DATA lv_classname    TYPE string.
     DATA lv_content_type TYPE string.
-    DATA li_handler TYPE REF TO if_http_extension.
-    DATA li_server TYPE REF TO if_http_server.
+    DATA li_handler      TYPE REF TO if_http_extension.
 
     WRITE '@KERNEL lv_classname.set(INPUT.class);'.
     TRANSLATE lv_classname TO UPPER CASE.
     CREATE OBJECT li_handler TYPE (lv_classname).
-    CREATE OBJECT li_server TYPE lcl_server.
+
+    IF mi_server IS INITIAL.
+      CREATE OBJECT mi_server TYPE lcl_server.
+    ENDIF.
 
     WRITE '@KERNEL lv_xstr.set(INPUT.req.body.toString("hex").toUpperCase());'.
-    li_server->request->set_data( lv_xstr ).
+    mi_server->request->set_data( lv_xstr ).
     WRITE '@KERNEL lv_str.set(INPUT.req.method);'.
-    li_server->request->set_method( lv_str ).
+    mi_server->request->set_method( lv_str ).
     WRITE '@KERNEL for (const h in INPUT.req.headers) {'.
     WRITE '@KERNEL   lv_name.set(h);'.
     WRITE '@KERNEL   lv_value.set(INPUT.req.headers[h]);'.
-    li_server->request->set_header_field(
+    mi_server->request->set_header_field(
       name  = lv_name
       value = lv_value ).
     WRITE '@KERNEL }'.
 
     WRITE '@KERNEL lv_value.set(INPUT.req.path);'.
-    li_server->request->set_header_field(
+    mi_server->request->set_header_field(
       name  = '~path'
       value = lv_value ).
 
@@ -44,14 +48,14 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
 
 ********************************************************
 
-    li_handler->handle_request( li_server ).
+    li_handler->handle_request( mi_server ).
 
 ********************************************************
 
-    lv_xstr = li_server->response->get_data( ).
-    li_server->response->get_status( IMPORTING code = lv_code ).
+    lv_xstr = mi_server->response->get_data( ).
+    mi_server->response->get_status( IMPORTING code = lv_code ).
 
-    lv_content_type = li_server->response->get_content_type( ).
+    lv_content_type = mi_server->response->get_content_type( ).
     WRITE '@KERNEL INPUT.res.append("Content-Type", lv_content_type.get());'.
 
     WRITE '@KERNEL INPUT.res.status(lv_code.get()).send(Buffer.from(lv_xstr.get(), "hex"));'.

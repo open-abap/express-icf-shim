@@ -44,6 +44,11 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
       name  = '~path'
       value = lv_value ).
 
+* todo, request_uri should also include query parameters?
+    mi_server->request->set_header_field(
+      name  = '~request_uri'
+      value = lv_value ).
+
 * todo, req.query
 
 ********************************************************

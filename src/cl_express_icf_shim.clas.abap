@@ -28,6 +28,7 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
     IF mi_server IS INITIAL.
       CREATE OBJECT mi_server TYPE lcl_server.
     ENDIF.
+    CREATE OBJECT mi_server->request TYPE cl_http_entity.
 
     WRITE '@KERNEL lv_xstr.set(INPUT.req.body.toString("hex").toUpperCase());'.
     mi_server->request->set_data( lv_xstr ).

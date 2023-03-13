@@ -1,14 +1,9 @@
 CLASS lcl_server DEFINITION.
   PUBLIC SECTION.
     INTERFACES if_http_server.
-    METHODS constructor.
 ENDCLASS.
 
 CLASS lcl_server IMPLEMENTATION.
-
-  METHOD constructor.
-    CREATE OBJECT if_http_server~request TYPE cl_http_entity.
-  ENDMETHOD.
 
   METHOD if_http_server~validate_xsrf_token.
     ASSERT 1 = 'todo'.

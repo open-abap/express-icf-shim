@@ -20,13 +20,13 @@ export function startServer(quiet) {
 
 // ------------------
 
-  app.all(["/abap", "/abap*"], async function (req, res) {
+  app.all(["/ztestabap", "/ztestabap*"], async function (req, res) {
     await cl_express_icf_shim.run({req, res, class: "ZCL_HTTP_HANDLER"});
   });
 
   const server = app.listen(PORT);
   if (quiet !== true) {
-    console.log("Listening on port http://localhost:" + PORT + "/abap");
+    console.log("Listening on port http://localhost:" + PORT + "/ztestabap");
   }
 
   return server;

@@ -10,7 +10,7 @@ CLASS zcl_http_handler IMPLEMENTATION.
     DATA lv_path   TYPE string.
     lv_path = server->request->get_header_field( '~path' ).
     CASE lv_path.
-      WHEN '/abap'.
+      WHEN '/ztestabap'.
         test1( server ).
       WHEN OTHERS.
         server->response->set_content_type( 'text/plain' ).

@@ -2,24 +2,23 @@ CLASS cl_express_icf_shim DEFINITION PUBLIC.
   PUBLIC SECTION.
     CLASS-METHODS run
       IMPORTING
-        res     TYPE any
-        express TYPE any.
+        res TYPE any
+        req TYPE any.
   PRIVATE SECTION.
     CLASS-DATA mi_server TYPE REF TO if_http_server.
     CLASS-METHODS response
       IMPORTING
         res     TYPE any ##NEEDED.
+    CLASS-METHODS request
+      IMPORTING
+        req     TYPE any ##NEEDED.
 ENDCLASS.
 
 CLASS cl_express_icf_shim IMPLEMENTATION.
 
   METHOD run.
-    DATA lv_xstr         TYPE xstring.
-    DATA lv_str          TYPE string.
-    DATA lv_name         TYPE string.
-    DATA lv_value        TYPE string.
-    DATA lv_classname    TYPE string.
-    DATA li_handler      TYPE REF TO if_http_extension.
+    DATA lv_classname TYPE string.
+    DATA li_handler   TYPE REF TO if_http_extension.
 
     WRITE '@KERNEL lv_classname.set(INPUT.class);'.
     TRANSLATE lv_classname TO UPPER CASE.
@@ -28,7 +27,25 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
     IF mi_server IS INITIAL.
       CREATE OBJECT mi_server TYPE lcl_server.
     ENDIF.
+
     CREATE OBJECT mi_server->request TYPE cl_http_entity.
+    request( req ).
+
+********************************************************
+
+    CREATE OBJECT mi_server->response TYPE cl_http_entity.
+    li_handler->handle_request( mi_server ).
+
+********************************************************
+
+    response( res ).
+  ENDMETHOD.
+
+  METHOD request.
+    DATA lv_xstr         TYPE xstring.
+    DATA lv_str          TYPE string.
+    DATA lv_name         TYPE string.
+    DATA lv_value        TYPE string.
 
     WRITE '@KERNEL lv_xstr.set(INPUT.req.body.toString("hex").toUpperCase());'.
     mi_server->request->set_data( lv_xstr ).
@@ -53,16 +70,6 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
       value = lv_value ).
 
 * todo, req.query
-
-********************************************************
-
-    CREATE OBJECT mi_server->response TYPE cl_http_entity.
-
-    li_handler->handle_request( mi_server ).
-
-********************************************************
-
-    response( res ).
   ENDMETHOD.
 
   METHOD response.

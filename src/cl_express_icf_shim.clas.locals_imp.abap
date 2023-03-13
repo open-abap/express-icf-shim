@@ -8,7 +8,6 @@ CLASS lcl_server IMPLEMENTATION.
 
   METHOD constructor.
     CREATE OBJECT if_http_server~request TYPE cl_http_entity.
-    CREATE OBJECT if_http_server~response TYPE cl_http_entity.
   ENDMETHOD.
 
   METHOD if_http_server~validate_xsrf_token.

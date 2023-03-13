@@ -27,4 +27,10 @@ describe('Integration Test', async () => {
     expect(await res.text()).to.equal("<b>hello<b>");
     expect(res.headers.get("content-type")).to.include("text/html")
   });
+
+  it('test3: set cache-control header field', async () => {
+    const res = await fetch('http://localhost:3030/ztestabap/test3');
+    expect(res.status).to.equal(200);
+    expect(res.headers.get("cache-control") || "").to.include("no-store")
+  });
 });

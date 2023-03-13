@@ -2,9 +2,13 @@ CLASS cl_express_icf_shim DEFINITION PUBLIC.
   PUBLIC SECTION.
     CLASS-METHODS run
       IMPORTING
+        res     TYPE any
         express TYPE any.
   PRIVATE SECTION.
     CLASS-DATA mi_server TYPE REF TO if_http_server.
+    CLASS-METHODS response
+      IMPORTING
+        res     TYPE any ##NEEDED.
 ENDCLASS.
 
 CLASS cl_express_icf_shim IMPLEMENTATION.
@@ -14,9 +18,7 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
     DATA lv_str          TYPE string.
     DATA lv_name         TYPE string.
     DATA lv_value        TYPE string.
-    DATA lv_code         TYPE i.
     DATA lv_classname    TYPE string.
-    DATA lv_content_type TYPE string.
     DATA li_handler      TYPE REF TO if_http_extension.
 
     WRITE '@KERNEL lv_classname.set(INPUT.class);'.
@@ -53,19 +55,32 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
 
 ********************************************************
 
+    CREATE OBJECT mi_server->response TYPE cl_http_entity.
+
     li_handler->handle_request( mi_server ).
 
 ********************************************************
 
-    lv_xstr = mi_server->response->get_data( ).
+    response( res ).
+  ENDMETHOD.
+
+  METHOD response.
+    DATA lv_code          TYPE i.
+    DATA lv_xstr          TYPE xstring.
+    DATA lt_header_fields TYPE tihttpnvp.
+    DATA ls_field         LIKE LINE OF lt_header_fields.
+
     mi_server->response->get_status( IMPORTING code = lv_code ).
     IF lv_code IS INITIAL.
       lv_code = 200.
     ENDIF.
 
-    lv_content_type = mi_server->response->get_content_type( ).
-    WRITE '@KERNEL INPUT.res.append("Content-Type", lv_content_type.get());'.
+    mi_server->response->get_header_fields( CHANGING fields = lt_header_fields ).
+    LOOP AT lt_header_fields INTO ls_field.
+      WRITE '@KERNEL INPUT.res.append(ls_field.get().name.get(), ls_field.get().value.get());'.
+    ENDLOOP.
 
+    lv_xstr = mi_server->response->get_data( ).
     WRITE '@KERNEL INPUT.res.status(lv_code.get()).send(Buffer.from(lv_xstr.get(), "hex"));'.
   ENDMETHOD.
 

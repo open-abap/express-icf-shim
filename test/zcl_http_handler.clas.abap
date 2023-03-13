@@ -3,6 +3,7 @@ CLASS zcl_http_handler DEFINITION PUBLIC.
     INTERFACES if_http_extension.
   PRIVATE SECTION.
     METHODS test1 IMPORTING server TYPE REF TO if_http_server.
+    METHODS test2 IMPORTING server TYPE REF TO if_http_server.
 ENDCLASS.
 
 CLASS zcl_http_handler IMPLEMENTATION.
@@ -12,6 +13,8 @@ CLASS zcl_http_handler IMPLEMENTATION.
     CASE lv_path.
       WHEN '/ztestabap'.
         test1( server ).
+      WHEN '/ztestabap/test2'.
+        test2( server ).
       WHEN OTHERS.
         server->response->set_content_type( 'text/plain' ).
         server->response->set_cdata( 'unknown path' ).
@@ -29,6 +32,16 @@ CLASS zcl_http_handler IMPLEMENTATION.
     lv_method = server->request->get_method( ).
     server->response->set_content_type( 'text/plain' ).
     server->response->set_cdata( 'boo, path:' && lv_path && ', method:' && lv_method ).
+    server->response->set_status(
+      code   = 200
+      reason = 'Success' ).
+  ENDMETHOD.
+
+  METHOD test2.
+    server->response->set_header_field(
+      name  = 'content-type'
+      value = 'text/html' ).
+    server->response->set_cdata( '<b>hello<b>' ).
     server->response->set_status(
       code   = 200
       reason = 'Success' ).

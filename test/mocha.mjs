@@ -21,7 +21,10 @@ describe('Integration Test', async () => {
     expect(res.headers.get("content-length")).to.equal("32");
   });
 
-  it('test2: sdf', async () => {
-    expect(1).to.equal(1);
+  it('test2: content-type via set_header_field', async () => {
+    const res = await fetch('http://localhost:3030/ztestabap/test2');
+    expect(res.status).to.equal(200);
+    expect(await res.text()).to.equal("<b>hello<b>");
+    expect(res.headers.get("content-type")).to.include("text/html")
   });
 });

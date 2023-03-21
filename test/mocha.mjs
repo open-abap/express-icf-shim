@@ -33,4 +33,10 @@ describe('Integration Test', async () => {
     expect(res.status).to.equal(200);
     expect(res.headers.get("cache-control") || "").to.include("no-store")
   });
+
+  it('test4: root unknown', async () => {
+    const res = await fetch('http://localhost:3030/ztestabap/');
+    expect(res.status).to.equal(200);
+    expect(await res.text()).to.equal("unknown path");
+  });
 });

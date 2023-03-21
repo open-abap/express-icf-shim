@@ -8,8 +8,9 @@ CLASS zcl_http_handler DEFINITION PUBLIC.
 ENDCLASS.
 
 CLASS zcl_http_handler IMPLEMENTATION.
+
   METHOD if_http_extension~handle_request.
-    DATA lv_path   TYPE string.
+    DATA lv_path TYPE string.
     lv_path = server->request->get_header_field( '~path' ).
     CASE lv_path.
       WHEN '/ztestabap'.
@@ -25,7 +26,6 @@ CLASS zcl_http_handler IMPLEMENTATION.
           code   = 200
           reason = 'Success' ).
     ENDCASE.
-
   ENDMETHOD.
 
   METHOD test1.

@@ -29,22 +29,28 @@ CLASS zcl_http_handler IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD test1.
-    DATA lv_path   TYPE string.
-    DATA lv_method TYPE string.
+    DATA lv_path      TYPE string.
+    DATA lv_path_info TYPE string.
+    DATA lv_method    TYPE string.
     lv_path = server->request->get_header_field( '~path' ).
+    lv_path_info = server->request->get_header_field( '~path_info' ).
     lv_method = server->request->get_method( ).
     server->response->set_content_type( 'text/plain' ).
-    server->response->set_cdata( 'boo, path:' && lv_path && ', method:' && lv_method ).
+    server->response->set_cdata( 'boo, path:' && lv_path &&
+      ', method:' && lv_method &&
+      ', info:' && lv_path_info ).
     server->response->set_status(
       code   = 200
       reason = 'Success' ).
   ENDMETHOD.
 
   METHOD test2.
+    DATA lv_path_info TYPE string.
+    lv_path_info = server->request->get_header_field( '~path_info' ).
     server->response->set_header_field(
       name  = 'content-type'
       value = 'text/html' ).
-    server->response->set_cdata( '<b>hello<b>' ).
+    server->response->set_cdata( |<b>hello { lv_path_info }<b>| ).
     server->response->set_status(
       code   = 200
       reason = 'Success' ).

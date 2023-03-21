@@ -2,8 +2,9 @@ CLASS cl_express_icf_shim DEFINITION PUBLIC.
   PUBLIC SECTION.
     CLASS-METHODS run
       IMPORTING
-        res TYPE any
-        req TYPE any.
+        res   TYPE any
+        req   TYPE any
+        base  TYPE string OPTIONAL.
   PRIVATE SECTION.
     CLASS-DATA mi_server TYPE REF TO if_http_server.
     CLASS-METHODS response
@@ -11,7 +12,8 @@ CLASS cl_express_icf_shim DEFINITION PUBLIC.
         res     TYPE any ##NEEDED.
     CLASS-METHODS request
       IMPORTING
-        req     TYPE any ##NEEDED.
+        req  TYPE any
+        base TYPE string ##NEEDED.
 ENDCLASS.
 
 CLASS cl_express_icf_shim IMPLEMENTATION.
@@ -29,7 +31,9 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
     ENDIF.
 
     CREATE OBJECT mi_server->request TYPE cl_http_entity.
-    request( req ).
+    request(
+      req  = req
+      base = base ).
 
 ********************************************************
 
@@ -42,10 +46,10 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD request.
-    DATA lv_xstr         TYPE xstring.
-    DATA lv_str          TYPE string.
-    DATA lv_name         TYPE string.
-    DATA lv_value        TYPE string.
+    DATA lv_xstr  TYPE xstring.
+    DATA lv_str   TYPE string.
+    DATA lv_name  TYPE string.
+    DATA lv_value TYPE string.
 
     WRITE '@KERNEL lv_xstr.set(INPUT.req.body.toString("hex").toUpperCase());'.
     mi_server->request->set_data( lv_xstr ).
@@ -62,6 +66,11 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
     WRITE '@KERNEL lv_value.set(INPUT.req.path);'.
     mi_server->request->set_header_field(
       name  = '~path'
+      value = lv_value ).
+
+    REPLACE FIRST OCCURRENCE OF base IN lv_value WITH ''.
+    mi_server->request->set_header_field(
+      name  = '~path_info'
       value = lv_value ).
 
 * todo, request_uri should also include query parameters?

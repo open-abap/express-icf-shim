@@ -20,8 +20,13 @@ export function startServer(quiet) {
 
 // ------------------
 
-  app.all(["/ztestabap", "/ztestabap*"], async function (req, res) {
-    await cl_express_icf_shim.run({req, res, class: "ZCL_HTTP_HANDLER"});
+  app.all("/ztestabap*", async function (req, res) {
+    await cl_express_icf_shim.run({
+      req,
+      res,
+      class: "ZCL_HTTP_HANDLER",
+      base: new abap.types.String().set("/ztestabap")
+    });
   });
 
   const server = app.listen(PORT);

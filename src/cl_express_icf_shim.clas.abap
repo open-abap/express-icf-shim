@@ -72,6 +72,10 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
     mi_server->request->set_header_field(
       name  = '~path_info'
       value = lv_value ).
+* extended is without alias
+    mi_server->request->set_header_field(
+      name  = '~path_info_expanded'
+      value = lv_value ).
 
 * todo, request_uri should also include query parameters?
     mi_server->request->set_header_field(

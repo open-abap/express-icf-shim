@@ -13,6 +13,12 @@ describe('Integration Test', async () => {
     server.close();
   });
 
+  it('root unknown', async () => {
+    const res = await fetch('http://localhost:3030/ztestabap/');
+    expect(res.status).to.equal(200);
+    expect(await res.text()).to.equal("unknown path");
+  });
+
   it('test1: basic 200 with text', async () => {
     const res = await fetch('http://localhost:3030/ztestabap');
     expect(res.status).to.equal(200);
@@ -34,9 +40,15 @@ describe('Integration Test', async () => {
     expect(res.headers.get("cache-control") || "").to.include("no-store")
   });
 
-  it('test4: root unknown', async () => {
-    const res = await fetch('http://localhost:3030/ztestabap/');
+  it('test4: request_uri', async () => {
+    const res = await fetch('http://localhost:3030/ztestabap/test4');
     expect(res.status).to.equal(200);
-    expect(await res.text()).to.equal("unknown path");
+    expect(await res.text()).to.equal("/ztestabap/test4");
+  });
+
+  it('test4: request_uri with query', async () => {
+    const res = await fetch('http://localhost:3030/ztestabap/test4?foo=bar');
+    expect(res.status).to.equal(200);
+    expect(await res.text()).to.equal("/ztestabap/test4?foo=bar");
   });
 });

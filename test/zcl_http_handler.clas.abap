@@ -7,6 +7,7 @@ CLASS zcl_http_handler DEFINITION PUBLIC.
     METHODS test3 IMPORTING server TYPE REF TO if_http_server.
     METHODS test4 IMPORTING server TYPE REF TO if_http_server.
     METHODS test5 IMPORTING server TYPE REF TO if_http_server.
+    METHODS test6 IMPORTING server TYPE REF TO if_http_server.
 ENDCLASS.
 
 CLASS zcl_http_handler IMPLEMENTATION.
@@ -25,6 +26,8 @@ CLASS zcl_http_handler IMPLEMENTATION.
         test4( server ).
       WHEN '/ztestabap/test5'.
         test5( server ).
+      WHEN '/ztestabap/test6'.
+        test6( server ).
       WHEN OTHERS.
         server->response->set_content_type( 'text/plain' ).
         server->response->set_cdata( 'unknown path' ).
@@ -87,6 +90,18 @@ CLASS zcl_http_handler IMPLEMENTATION.
   METHOD test5.
     DATA lv_request_uri TYPE string.
     lv_request_uri = server->request->get_header_field( '~path_translated_expanded' ).
+    server->response->set_header_field(
+      name  = 'content-type'
+      value = 'text/plain' ).
+    server->response->set_cdata( lv_request_uri ).
+    server->response->set_status(
+      code   = 200
+      reason = 'Success' ).
+  ENDMETHOD.
+
+  METHOD test6.
+    DATA lv_request_uri TYPE string.
+    lv_request_uri = server->request->get_header_field( '~query_string' ).
     server->response->set_header_field(
       name  = 'content-type'
       value = 'text/plain' ).

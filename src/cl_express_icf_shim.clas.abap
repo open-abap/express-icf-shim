@@ -72,6 +72,9 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
     mi_server->request->set_header_field(
       name  = '~path'
       value = lv_value ).
+    mi_server->request->set_header_field(
+      name  = '~path_translated_expanded'
+      value = lv_value ).
 
     REPLACE FIRST OCCURRENCE OF base IN lv_value WITH ''.
     mi_server->request->set_header_field(

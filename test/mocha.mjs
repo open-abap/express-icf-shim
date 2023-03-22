@@ -51,4 +51,10 @@ describe('Integration Test', async () => {
     expect(res.status).to.equal(200);
     expect(await res.text()).to.equal("/ztestabap/test4?foo=bar");
   });
+
+  it('test5: path_translated_expanded', async () => {
+    const res = await fetch('http://localhost:3030/ztestabap/test5');
+    expect(res.status).to.equal(200);
+    expect(await res.text()).to.equal("/ztestabap/test5");
+  });
 });

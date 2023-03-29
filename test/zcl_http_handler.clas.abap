@@ -91,24 +91,24 @@ CLASS zcl_http_handler IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD test5.
-    DATA lv_request_uri TYPE string.
-    lv_request_uri = server->request->get_header_field( '~path_translated_expanded' ).
+    DATA lv_path_te TYPE string.
+    lv_path_te = server->request->get_header_field( '~path_translated_expanded' ).
     server->response->set_header_field(
       name  = 'content-type'
       value = 'text/plain' ).
-    server->response->set_cdata( lv_request_uri ).
+    server->response->set_cdata( lv_path_te ).
     server->response->set_status(
       code   = 200
       reason = 'Success' ).
   ENDMETHOD.
 
   METHOD test6.
-    DATA lv_request_uri TYPE string.
-    lv_request_uri = server->request->get_header_field( '~query_string' ).
+    DATA lv_query_string TYPE string.
+    lv_query_string = server->request->get_header_field( '~query_string' ).
     server->response->set_header_field(
       name  = 'content-type'
       value = 'text/plain' ).
-    server->response->set_cdata( lv_request_uri ).
+    server->response->set_cdata( lv_query_string ).
     server->response->set_status(
       code   = 200
       reason = 'Success' ).

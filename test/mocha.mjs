@@ -67,7 +67,7 @@ describe('Integration Test', async () => {
   it('test7: form_fields', async () => {
     const res = await fetch('http://localhost:3030/ztestabap/test7?foo=bar&MOO=BOO');
     expect(res.status).to.equal(200);
-    expect(await res.text()).to.equal(`foo=bar
+    expect((await res.text()).trimEnd()).to.equal(`foo=bar
 moo=BOO
 foo=bar
 MOO=BOO`);

@@ -92,6 +92,7 @@ CLASS zcl_http_handler IMPLEMENTATION.
 
   METHOD test5.
     DATA lv_path_te TYPE string.
+
     lv_path_te = server->request->get_header_field( '~path_translated_expanded' ).
     server->response->set_header_field(
       name  = 'content-type'
@@ -104,6 +105,7 @@ CLASS zcl_http_handler IMPLEMENTATION.
 
   METHOD test6.
     DATA lv_query_string TYPE string.
+
     lv_query_string = server->request->get_header_field( '~query_string' ).
     server->response->set_header_field(
       name  = 'content-type'

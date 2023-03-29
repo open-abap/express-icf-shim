@@ -46,10 +46,11 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD request.
-    DATA lv_xstr  TYPE xstring.
-    DATA lv_str   TYPE string.
-    DATA lv_name  TYPE string.
-    DATA lv_value TYPE string.
+    DATA lv_xstr   TYPE xstring.
+    DATA lv_str    TYPE string.
+    DATA lv_name   TYPE string.
+    DATA lv_value  TYPE string.
+    DATA lt_fields TYPE tihttpnvp.
 
     WRITE '@KERNEL lv_xstr.set(INPUT.req.body.toString("hex").toUpperCase());'.
     mi_server->request->set_data( lv_xstr ).
@@ -72,6 +73,10 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
     mi_server->request->set_header_field(
       name  = '~query_string'
       value = lv_value ).
+
+    lt_fields = cl_http_utility=>string_to_fields( lv_value ).
+    mi_server->request->set_form_fields( lt_fields ).
+
 
     WRITE '@KERNEL lv_value.set(INPUT.req.path);'.
     mi_server->request->set_header_field(

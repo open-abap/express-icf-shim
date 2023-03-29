@@ -77,6 +77,7 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
     lt_fields = cl_http_utility=>string_to_fields( lv_value ).
     mi_server->request->set_form_fields( lt_fields ).
 
+
     WRITE '@KERNEL lv_value.set(INPUT.req.path);'.
     mi_server->request->set_header_field(
       name  = '~path'

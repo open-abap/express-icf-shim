@@ -100,12 +100,18 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
   METHOD response.
     DATA lv_code          TYPE i.
     DATA lv_xstr          TYPE xstring.
+    DATA lv_content_type  TYPE string.
     DATA lt_header_fields TYPE tihttpnvp.
     DATA ls_field         LIKE LINE OF lt_header_fields.
 
     mi_server->response->get_status( IMPORTING code = lv_code ).
     IF lv_code IS INITIAL.
       lv_code = 200.
+    ENDIF.
+
+    lv_content_type = mi_server->response->get_content_type( ).
+    IF lv_content_type IS INITIAL.
+      mi_server->response->set_content_type( 'text/html' ).
     ENDIF.
 
     mi_server->response->get_header_fields( CHANGING fields = lt_header_fields ).

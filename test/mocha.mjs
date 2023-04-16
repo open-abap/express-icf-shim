@@ -23,7 +23,7 @@ describe('Integration Test', async () => {
     const res = await fetch('http://localhost:3030/ztestabap');
     expect(res.status).to.equal(200);
     expect(await res.text()).to.equal("boo, path:/ztestabap, method:GET, info:");
-    expect(res.headers.get("content-type")).to.include("text/plain")
+    expect(res.headers.get("content-type")).to.include("text/plain");
     expect(res.headers.get("content-length")).to.equal("39");
   });
 
@@ -71,5 +71,11 @@ describe('Integration Test', async () => {
 moo=BOO
 foo=bar
 MOO=BOO`);
+  });
+
+  it('test8: implicit content type', async () => {
+    const res = await fetch('http://localhost:3030/ztestabap/test8');
+    expect(res.status).to.equal(200);
+    expect(res.headers.get("content-type")).to.include("text/html");
   });
 });

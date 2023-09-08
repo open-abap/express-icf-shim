@@ -8,8 +8,6 @@ The ABAP code must set correct status and content types in responses.
 
 ## Usage
 
-wip,
-
 ```js
 import express from 'express';
 import {initializeABAP} from "../output/init.mjs";

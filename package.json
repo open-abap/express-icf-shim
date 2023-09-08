@@ -24,9 +24,9 @@
   },
   "homepage": "https://github.com/open-abap/express-icf-shim#readme",
   "dependencies": {
-    "@abaplint/cli": "^2.102.29",
-    "@abaplint/runtime": "^2.7.83",
-    "@abaplint/transpiler-cli": "^2.7.83",
+    "@abaplint/cli": "^2.102.34",
+    "@abaplint/runtime": "^2.7.93",
+    "@abaplint/transpiler-cli": "^2.7.93",
     "express": "^4.18.2"
   },
   "devDependencies": {

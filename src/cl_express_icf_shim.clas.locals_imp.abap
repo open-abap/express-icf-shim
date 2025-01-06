@@ -1,6 +1,9 @@
 CLASS lcl_server DEFINITION.
   PUBLIC SECTION.
     INTERFACES if_http_server.
+
+    ALIASES request FOR if_http_server~request.
+    ALIASES response FOR if_http_server~response.
 ENDCLASS.
 
 CLASS lcl_server IMPLEMENTATION.

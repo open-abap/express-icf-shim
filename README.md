@@ -4,7 +4,7 @@
 
 The ABAP code must set correct status and content types in responses.
 
-`npm install express --save-dev`
+`npm install express@4 --save-dev`
 
 ## Usage
 

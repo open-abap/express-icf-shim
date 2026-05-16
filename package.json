@@ -30,7 +30,7 @@
     "express": "^4.22.2"
   },
   "devDependencies": {
-    "chai": "^4.4.1",
+    "chai": "^4.5.0",
     "cross-fetch": "^4.1.0",
     "mocha": "^11.7.5"
   }

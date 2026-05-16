@@ -47,12 +47,15 @@ CLASS zcl_http_handler IMPLEMENTATION.
     DATA lv_path      TYPE string.
     DATA lv_path_info TYPE string.
     DATA lv_method    TYPE string.
+    DATA lv_request_method TYPE string.
     lv_path = server->request->get_header_field( '~path' ).
     lv_path_info = server->request->get_header_field( '~path_info' ).
     lv_method = server->request->get_method( ).
+    lv_request_method = server->request->get_header_field( '~request_method' ).
     server->response->set_content_type( 'text/plain' ).
     server->response->set_cdata( 'boo, path:' && lv_path &&
       ', method:' && lv_method &&
+      ', request_method:' && lv_request_method &&
       ', info:' && lv_path_info ).
     server->response->set_status(
       code   = 200

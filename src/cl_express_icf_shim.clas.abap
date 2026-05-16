@@ -54,8 +54,13 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
 
     WRITE '@KERNEL lv_xstr.set(INPUT.req.body.toString("hex").toUpperCase());'.
     mi_server->request->set_data( lv_xstr ).
+
     WRITE '@KERNEL lv_str.set(INPUT.req.method);'.
     mi_server->request->set_method( lv_str ).
+    mi_server->request->set_header_field(
+      name  = '~request_method'
+      value = lv_str ).
+
     WRITE '@KERNEL for (const h in INPUT.req.headers) {'.
     WRITE '@KERNEL   lv_name.set(h);'.
     WRITE '@KERNEL   lv_value.set(INPUT.req.headers[h]);'.

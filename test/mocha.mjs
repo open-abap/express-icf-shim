@@ -22,9 +22,9 @@ describe('Integration Test', async () => {
   it('test1: basic 200 with text', async () => {
     const res = await fetch('http://localhost:3030/ztestabap');
     expect(res.status).to.equal(200);
-    expect(await res.text()).to.equal("boo, path:/ztestabap, method:GET, info:");
+    expect(await res.text()).to.equal("boo, path:/ztestabap, method:GET, request_method:GET, info:");
     expect(res.headers.get("content-type")).to.include("text/plain");
-    expect(res.headers.get("content-length")).to.equal("39");
+    expect(res.headers.get("content-length")).to.equal("59");
   });
 
   it('test2: content-type via set_header_field', async () => {

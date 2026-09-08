@@ -16,6 +16,9 @@
   "rules": {
     "7bit_ascii": true,
     "abapdoc": false,
+    "aff_and_xml": true,
+    "align_pseudo_comments": true,
+    "align_type_expressions": true,
     "align_parameters": true,
     "cds_comment_style": true,
     "cds_legacy_view": true,
@@ -124,7 +127,7 @@
     "prefer_inline": true,
     "prefer_is_not": true,
     "prefer_raise_exception_new": true,
-    "prefer_returning_to_exporting": true,
+    "prefer_returning_to_exporting": false,
     "prefer_xsdbool": true,
     "preferred_compare_operator": true,
     "prefix_is_current_class": true,

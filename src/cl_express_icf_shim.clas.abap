@@ -2,14 +2,14 @@ CLASS cl_express_icf_shim DEFINITION PUBLIC.
   PUBLIC SECTION.
     CLASS-METHODS run
       IMPORTING
-        res   TYPE any
-        req   TYPE any
-        base  TYPE string OPTIONAL.
+        res  TYPE any
+        req  TYPE any
+        base TYPE string OPTIONAL.
   PRIVATE SECTION.
     CLASS-DATA mi_server TYPE REF TO if_http_server.
     CLASS-METHODS response
       IMPORTING
-        res     TYPE any ##NEEDED.
+        res TYPE any ##NEEDED.
     CLASS-METHODS request
       IMPORTING
         req  TYPE any

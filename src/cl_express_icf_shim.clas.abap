@@ -14,6 +14,11 @@ CLASS cl_express_icf_shim DEFINITION PUBLIC.
       IMPORTING
         req  TYPE any
         base TYPE string ##NEEDED.
+    CLASS-METHODS form_fields_from_body
+      IMPORTING
+        req           TYPE any
+      RETURNING
+        VALUE(fields) TYPE tihttpnvp ##NEEDED.
 ENDCLASS.
 
 CLASS cl_express_icf_shim IMPLEMENTATION.
@@ -79,7 +84,10 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
       name  = '~query_string'
       value = lv_value ).
 
-    lt_fields = cl_http_utility=>string_to_fields( lv_value ).
+* the fields of a posted form come first, as with the default search option
+* of get_form_fields_cs, co_body_before_query_string
+    lt_fields = form_fields_from_body( req ).
+    APPEND LINES OF cl_http_utility=>string_to_fields( lv_value ) TO lt_fields.
     mi_server->request->set_form_fields( lt_fields ).
 
 
@@ -100,6 +108,26 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
       name  = '~path_info_expanded'
       value = lv_value ).
 
+  ENDMETHOD.
+
+  METHOD form_fields_from_body.
+* a body sent as application/x-www-form-urlencoded, decoded as a form is:
+* "+" is a space, and the name is unescaped as well as the value
+    DATA ls_field LIKE LINE OF fields.
+    DATA lv_name  TYPE string.
+    DATA lv_value TYPE string.
+
+    WRITE '@KERNEL const contentType = String(INPUT.req.headers["content-type"] || "").toLowerCase();'.
+    WRITE '@KERNEL if (contentType.split(";")[0].trim() === "application/x-www-form-urlencoded"'.
+    WRITE '@KERNEL     && Buffer.isBuffer(INPUT.req.body)) {'.
+    WRITE '@KERNEL   for (const [n, v] of new URLSearchParams(INPUT.req.body.toString("utf8"))) {'.
+    WRITE '@KERNEL     lv_name.set(n);'.
+    WRITE '@KERNEL     lv_value.set(v);'.
+    ls_field-name = lv_name.
+    ls_field-value = lv_value.
+    APPEND ls_field TO fields.
+    WRITE '@KERNEL   }'.
+    WRITE '@KERNEL }'.
   ENDMETHOD.
 
   METHOD response.

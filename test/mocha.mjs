@@ -78,4 +78,44 @@ MOO=BOO`);
     expect(res.status).to.equal(200);
     expect(res.headers.get("content-type")).to.include("text/html");
   });
+  it('test9: form fields from a posted form body', async () => {
+    const res = await fetch('http://localhost:3030/ztestabap/test9', {
+      method: 'POST',
+      headers: {'content-type': 'application/x-www-form-urlencoded'},
+      body: 'name=hello+world&sign=%26%3D&caf%C3%A9=ok'});
+    expect(res.status).to.equal(200);
+    expect(await res.text()).to.equal(`name=hello world
+sign=&=
+caf\u00e9=ok
+get_form_field:hello world`);
+  });
+
+  it('test9: a charset parameter on the form content type', async () => {
+    const res = await fetch('http://localhost:3030/ztestabap/test9', {
+      method: 'POST',
+      headers: {'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+      body: 'name=x'});
+    expect(await res.text()).to.equal(`name=x
+get_form_field:x`);
+  });
+
+  it('test9: body fields come before query string fields', async () => {
+    const res = await fetch('http://localhost:3030/ztestabap/test9?name=query&q=1', {
+      method: 'POST',
+      headers: {'content-type': 'application/x-www-form-urlencoded'},
+      body: 'name=body'});
+    expect(await res.text()).to.equal(`name=body
+name=query
+q=1
+get_form_field:body`);
+  });
+
+  it('test9: a body that is not a form gives no fields', async () => {
+    const res = await fetch('http://localhost:3030/ztestabap/test9?q=1', {
+      method: 'POST',
+      headers: {'content-type': 'text/plain'},
+      body: 'name=body'});
+    expect(await res.text()).to.equal(`q=1
+get_form_field:`);
+  });
 });

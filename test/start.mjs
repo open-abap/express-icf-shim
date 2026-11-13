@@ -20,7 +20,8 @@ export function startServer(quiet) {
 
 // ------------------
 
-  app.all("/ztestabap*", async function (req, res) {
+// a RegExp path works with both express 4 and 5
+  app.all(/^\/ztestabap/, async function (req, res) {
     await cl_express_icf_shim.run({
       req,
       res,

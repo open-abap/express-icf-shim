@@ -57,7 +57,10 @@ CLASS cl_express_icf_shim IMPLEMENTATION.
     DATA lv_value  TYPE string.
     DATA lt_fields TYPE tihttpnvp.
 
-    WRITE '@KERNEL lv_xstr.set(INPUT.req.body.toString("hex").toUpperCase());'.
+* express 4 sets req.body to {} when there is no body, express 5 leaves it undefined
+    WRITE '@KERNEL if (Buffer.isBuffer(INPUT.req.body)) {'.
+    WRITE '@KERNEL   lv_xstr.set(INPUT.req.body.toString("hex").toUpperCase());'.
+    WRITE '@KERNEL }'.
     mi_server->request->set_data( lv_xstr ).
 
     WRITE '@KERNEL lv_str.set(INPUT.req.method);'.

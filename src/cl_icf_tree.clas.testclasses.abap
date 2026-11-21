@@ -30,6 +30,8 @@ CLASS ltcl_test IMPLEMENTATION.
         no_authority          = 5
         OTHERS                = 6.
 
+    cl_abap_unit_assert=>assert_subrc( ).
+
     cl_icf_tree=>if_icf_tree~service_from_url(
       EXPORTING
         hostnumber            = 1
@@ -42,6 +44,8 @@ CLASS ltcl_test IMPLEMENTATION.
         wrong_url             = 4
         no_authority          = 5
         OTHERS                = 6 ).
+
+    cl_abap_unit_assert=>assert_subrc( ).
 
   ENDMETHOD.
 
